@@ -1,5 +1,9 @@
+import { useRouter } from "next/router";
 import React from "react";
 
-export default () => {
-  return <div></div>;
-};
+function Home() {
+  const router = useRouter();
+  return <div>{JSON.stringify(router.query)}</div>;
+}
+
+export default Home;

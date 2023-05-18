@@ -1,22 +1,52 @@
 import React, { useCallback } from "react";
 import { SubmitErrorHandler, useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
+import useMutation from "../lib/client/useMutation";
+import { useRouter } from "next/router";
+import ROUTES from "src/routes";
 
-interface CreateAccountType {
+interface CreateAccountFormType {
   email: string;
   name: string;
 }
+interface CreateAccountDataType {
+  ok: boolean;
+  createdUser?: {
+    id: number;
+    email: string;
+    name: string;
+  };
+}
 const CreateAccount = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors: formErrors },
-  } = useForm<CreateAccountType>({ mode: "onChange" });
+  } = useForm<CreateAccountFormType>({ mode: "onChange" });
+  const [createAccount] = useMutation<
+    CreateAccountDataType,
+    CreateAccountFormType
+  >(ROUTES.API_CREATE_ACCOUNT, {
+    onCompleted: (data) => {
+      alert("회원가입이 완료되었습니다! 로그인을 해주세요!");
+      if (data.createdUser) {
+        router.push(ROUTES.LOG_IN);
+      }
+    },
+    onError: (error) => {
+      console.error(error);
+      alert("회원가입에 실패하였습니다.");
+    },
+  });
 
-  const onSubmit: SubmitHandler<CreateAccountType> = useCallback((data) => {
-    console.log(data);
-  }, []);
-  const onInvalid: SubmitErrorHandler<CreateAccountType> = useCallback(
+  const onSubmit: SubmitHandler<CreateAccountFormType> = useCallback(
+    (payload) => {
+      createAccount(payload);
+    },
+    []
+  );
+  const onInvalid: SubmitErrorHandler<CreateAccountFormType> = useCallback(
     (error) => {
       console.error(error);
     },
@@ -37,7 +67,7 @@ const CreateAccount = () => {
             })}
           />
           <span>
-            {formErrors.email?.type === "notEmail" &&
+            {formErrors.email?.type === "email" &&
               "이메일 형식이 올바르지 않습니다."}
           </span>
         </label>
@@ -55,7 +85,7 @@ const CreateAccount = () => {
             })}
           />
           <span>
-            {formErrors.name?.type === "notName" &&
+            {formErrors.name?.type === "name" &&
               "닉네임 형식이 올바르지 않습니다."}
           </span>
         </label>
