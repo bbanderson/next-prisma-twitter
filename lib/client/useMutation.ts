@@ -1,9 +1,10 @@
 import { useCallback, useState } from "react";
 
+type CommonDataType = { ok?: boolean; message?: string; error?: unknown };
 export default function useMutation<DataType = any, VariableType = any>(
   url: string,
   options?: {
-    onCompleted?: (data: DataType) => void;
+    onCompleted?: (data: DataType & CommonDataType) => void;
     onError?: (error: unknown) => void;
   }
 ): readonly [

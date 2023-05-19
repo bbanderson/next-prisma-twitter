@@ -4,6 +4,7 @@ import type { SubmitHandler } from "react-hook-form";
 import useMutation from "../lib/client/useMutation";
 import { useRouter } from "next/router";
 import ROUTES from "src/routes";
+import { EMAIL_REGEX, NAME_REGEX } from "src/constants";
 
 interface CreateAccountFormType {
   email: string;
@@ -61,8 +62,7 @@ const CreateAccount = () => {
             {...register("email", {
               required: "이메일을 입력하세요",
               validate: {
-                email: (str) =>
-                  new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g).test(str),
+                email: (str) => new RegExp(EMAIL_REGEX).test(str),
               },
             })}
           />
@@ -77,10 +77,7 @@ const CreateAccount = () => {
             {...register("name", {
               required: "닉네임을 입력하세요",
               validate: {
-                name: (str) =>
-                  new RegExp(
-                    /^[A-Za-z0-9]+([A-Za-z0-9]*|[._-]?[A-Za-z0-9]+)*$/g
-                  ).test(str),
+                name: (str) => new RegExp(NAME_REGEX).test(str),
               },
             })}
           />
