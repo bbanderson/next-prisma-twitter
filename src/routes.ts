@@ -7,6 +7,7 @@ const PAGE_ROUTES = {
 const API_ROUTES = {
   API_CREATE_ACCOUNT: "/api/create-account",
   API_LOG_IN: "/api/log-in",
+  API_ME: "/api/me",
 } as const;
 
 const ROUTES = {

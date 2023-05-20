@@ -1,5 +1,6 @@
 import client from "@lib/server/client";
 import withHandler from "@lib/server/withHandler";
+import withSession from "@lib/server/withSession";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -16,8 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         .status(404)
         .json({ ok: false, message: "이메일을 확인해 주세요." });
     }
-
-    req.session.user.id = foundUser.id;
+    req.session = { ...req.session, user: { id: foundUser.id } };
     await req.session.save();
     res.status(200).json({ ok: true });
   } catch (error) {
@@ -26,4 +26,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withHandler({ method: "POST", handler });
+export default withSession(
+  withHandler({
+    methods: ["GET", "POST"],
+    handler,
+    isPrivate: false,
+  })
+);

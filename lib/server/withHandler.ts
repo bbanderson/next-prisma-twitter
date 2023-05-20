@@ -1,23 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+type MethodType = "GET" | "POST";
 interface withHandlerPropType {
-  method: "GET" | "POST";
+  methods: MethodType[];
   handler(req: NextApiRequest, res: NextApiResponse): Promise<void>;
   isPrivate?: boolean;
 }
 const withHandler = ({
-  method,
+  methods,
   handler,
-  isPrivate = false,
+  isPrivate = true,
 }: withHandlerPropType) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method !== method) {
+    if (
+      req.method &&
+      !methods.includes(req.method.toUpperCase() as MethodType)
+    ) {
       res.status(405).end();
       return;
     }
 
     if (isPrivate && !req.session.user) {
-      res.status(401).json({ ok: false, message: "로그인이 필요합니다." });
+      res.status(401).json({ ok: true, message: "로그인이 필요합니다." });
     }
 
     try {
