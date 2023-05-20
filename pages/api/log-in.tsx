@@ -19,6 +19,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
     req.session = { ...req.session, user: { id: foundUser.id } };
     await req.session.save();
+
     res.status(200).json({ ok: true });
   } catch (error) {
     console.error(error);
@@ -28,7 +29,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
 export default withSession(
   withHandler({
-    methods: ["GET", "POST"],
+    methods: ["POST"],
     handler,
     isPrivate: false,
   })

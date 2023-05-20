@@ -20,8 +20,11 @@ const withHandler = ({
       return;
     }
 
-    if (isPrivate && !req.session.user) {
-      res.status(401).json({ ok: true, message: "로그인이 필요합니다." });
+    if (isPrivate) {
+      if (!req.session.user) {
+        res.status(401).json({ ok: false, message: "로그인이 필요합니다." });
+        return;
+      }
     }
 
     try {

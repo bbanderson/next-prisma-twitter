@@ -5,19 +5,26 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const userSessionId = req.session.user.id;
+
   try {
     const foundUser = await client.user.findUnique({
       where: { id: userSessionId },
     });
 
-    res.status(200).json({
-      ok: true,
-      userSessionData: foundUser ? { ...foundUser } : undefined,
-    });
+    if (foundUser) {
+      res.status(200).json({
+        ok: true,
+        userSessionData: { ...foundUser },
+      });
+    } else {
+      res.status(401).json({
+        ok: true,
+      });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ ok: false, error });
   }
 }
 
-export default withSession(withHandler({ methods: ["GET", "POST"], handler }));
+export default withSession(withHandler({ methods: ["GET"], handler }));

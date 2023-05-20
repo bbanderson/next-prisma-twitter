@@ -1,28 +1,31 @@
 import { useCallback, useState } from "react";
 
 type CommonDataType = { ok?: boolean; message?: string; error?: unknown };
-export default function useMutation<DataType = any, VariableType = any>(
+export default function useMutation<
+  DataType = CommonDataType,
+  VariableType = any
+>(
   url: string,
   options?: {
     onCompleted?: (data: DataType & CommonDataType) => void;
     onError?: (error: unknown) => void;
   }
 ): readonly [
-  (payload: VariableType) => void,
+  (payload?: VariableType) => void,
   { loading: boolean; data?: DataType; error?: string }
 ] {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<DataType>();
   const [error, setError] = useState<string>();
 
-  const mutation = useCallback((payload: VariableType) => {
+  const mutation = useCallback((payload?: VariableType) => {
     setLoading(true);
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
+      body: payload ? JSON.stringify(payload) : undefined,
     })
       .then((response) => response.json())
       .then((data) => {

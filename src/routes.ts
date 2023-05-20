@@ -8,6 +8,7 @@ const API_ROUTES = {
   API_CREATE_ACCOUNT: "/api/create-account",
   API_LOG_IN: "/api/log-in",
   API_ME: "/api/me",
+  API_LOG_OUT: "/api/log-out",
 } as const;
 
 const ROUTES = {
