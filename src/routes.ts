@@ -5,10 +5,11 @@ const PAGE_ROUTES = {
 } as const;
 
 const API_ROUTES = {
-  API_CREATE_ACCOUNT: "/api/create-account",
-  API_LOG_IN: "/api/log-in",
-  API_ME: "/api/me",
-  API_LOG_OUT: "/api/log-out",
+  API_CREATE_ACCOUNT: "/api/user/create-account",
+  API_LOG_IN: "/api/user/log-in",
+  API_ME: "/api/user/me",
+  API_LOG_OUT: "/api/user/log-out",
+  API_TWEET: "/api/tweet",
 } as const;
 
 const ROUTES = {

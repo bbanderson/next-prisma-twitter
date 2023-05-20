@@ -1,6 +1,7 @@
 import useMutation from "@lib/client/useMutation";
+import useUser from "@lib/client/useUser";
 import { useRouter } from "next/router";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthInput } from "src/components/molecules/authInput";
 import ROUTES from "src/routes";
