@@ -2,7 +2,9 @@ import { Post } from "@prisma/client";
 
 export interface PostItemPropType {
   id?: number;
+  authorId?: number;
   authorName?: string;
+  imgSrc?: string | null;
   text?: string;
   isLiked?: boolean;
   createdAt?: string;
@@ -18,6 +20,7 @@ export interface PostRawType {
       userId: number;
     }[];
     user: {
+      imgSrc: string | null;
       name: string;
       id: number;
     };

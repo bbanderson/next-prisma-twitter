@@ -1,24 +1,9 @@
-import { Post } from "@prisma/client";
 import dayjs from "dayjs";
 import { useCallback } from "react";
-import { PostItemPropType } from "src/types/postItem";
-
-type PostRawType = Post & {
-  LikedPost: {
-    userId: number;
-  }[];
-  user: {
-    name: string;
-    id: number;
-  };
-  _count: {
-    LikedPost: number;
-    Comment: number;
-  };
-};
+import { PostItemPropType, PostRawType } from "src/types/postItem";
 
 interface usePostItemPropsInterface {
-  post?: PostRawType;
+  post?: PostRawType["posts"][0];
   userId?: number;
   onClickLike?(): void;
 }
@@ -33,6 +18,7 @@ export const usePostItemProps = ({
         ? {
             id: post?.id,
             authorName: post?.user.name,
+            imgSrc: post.user.imgSrc,
             text: post?.text,
             isLiked: !!post?.LikedPost.find((liker) => liker.userId === userId),
             likeCount: post?._count.LikedPost,

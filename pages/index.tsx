@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import ProfileImage from "src/components/molecules/profileImage";
 import ROUTES from "src/routes";
 import { PostRawType } from "src/types/postItem";
 import useSWR from "swr";
@@ -180,7 +181,11 @@ function Home() {
                       d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
                     />
                   </svg>
-                  <div className="rounded-full bg-slate-200 w-14 h-14" />
+                  <ProfileImage
+                    imgSrc={post.user.imgSrc}
+                    alt={post.user.name}
+                    randomSeed={post.user.id}
+                  />
                   <div className="flex flex-col ml-5 flex-1">
                     <div>
                       <span className="font-semibold">{post.user.name}</span>

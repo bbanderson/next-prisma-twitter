@@ -16,6 +16,7 @@ model User {
   name      String
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
+  imgSrc    String?
   posts     Post[]
   LikedPost LikedPost[]
   Comment   Comment[]

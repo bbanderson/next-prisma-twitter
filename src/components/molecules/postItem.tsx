@@ -1,8 +1,11 @@
 import React from "react";
 import { PostItemPropType } from "src/types/postItem";
+import ProfileImage from "./profileImage";
 
 const PostItem = ({
+  authorId,
   authorName,
+  imgSrc,
   text,
   isLiked,
   createdAt,
@@ -29,7 +32,7 @@ const PostItem = ({
           d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
         />
       </svg>
-      <div className="rounded-full bg-slate-200 w-14 h-14" />
+      <ProfileImage imgSrc={imgSrc} alt={authorName} randomSeed={authorId} />
       <div className="flex flex-col ml-5 flex-1">
         <div>
           <span className="font-semibold">{authorName}</span>
