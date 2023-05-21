@@ -20,7 +20,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         },
         LikedPost: {
           select: {
-            id: true,
+            userId: true,
           },
         },
         _count: {

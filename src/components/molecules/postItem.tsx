@@ -2,7 +2,6 @@ import React from "react";
 import { PostItemPropType } from "src/types/postItem";
 
 const PostItem = ({
-  id,
   authorName,
   text,
   isLiked,
@@ -13,7 +12,6 @@ const PostItem = ({
 }: PostItemPropType) => {
   return (
     <div
-      key={id}
       className="p-2 flex relative hover:bg-slate-50
 "
     >

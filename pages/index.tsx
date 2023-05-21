@@ -1,15 +1,13 @@
 import useMutation from "@lib/client/useMutation";
-import { usePostItemProps } from "@lib/client/usePostItemProps";
 import useUser from "@lib/client/useUser";
 import { Post } from "@prisma/client";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useRef, useState } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import Header from "src/components/molecules/header";
-import PostItem from "src/components/molecules/postItem";
 import ROUTES from "src/routes";
+import { PostRawType } from "src/types/postItem";
 import useSWR from "swr";
 
 interface PostForm {
@@ -21,22 +19,7 @@ function Home() {
 
   const { loading, profile } = useUser();
 
-  const { data, mutate } = useSWR<{
-    ok: boolean;
-    posts: (Post & {
-      LikedPost: {
-        userId: number;
-      }[];
-      user: {
-        name: string;
-        id: number;
-      };
-      _count: {
-        LikedPost: number;
-        Comment: number;
-      };
-    })[];
-  }>(ROUTES.API_POST);
+  const { data, mutate } = useSWR<PostRawType>(ROUTES.API_POST);
 
   const [logout] = useMutation(ROUTES.API_LOG_OUT, {
     onCompleted: (data) => {
@@ -72,11 +55,6 @@ function Home() {
         mutate();
       }
     },
-  });
-
-  const { getPostItemProps } = usePostItemProps({
-    userId: profile.id,
-    onClickLike: toggleLike,
   });
 
   const handleClickHeartAndComment = useCallback((e: React.SyntheticEvent) => {
