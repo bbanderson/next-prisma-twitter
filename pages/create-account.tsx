@@ -47,10 +47,10 @@ const CreateAccount = () => {
           draggable: true,
           progress: undefined,
           theme: "colored",
-        });
-        toast.onChange(() => {
-          mutate(ROUTES.API_ME);
-          router.push(ROUTES.LOG_IN);
+          onClose: () => {
+            mutate(ROUTES.API_ME);
+            router.push(ROUTES.LOG_IN);
+          },
         });
       } else if (data.error) {
         toast.error("이미 존재하는 이메일입니다.", {
@@ -62,9 +62,9 @@ const CreateAccount = () => {
           draggable: true,
           progress: undefined,
           theme: "colored",
-        });
-        toast.onChange(() => {
-          reset();
+          onClose: () => {
+            reset();
+          },
         });
       }
     },

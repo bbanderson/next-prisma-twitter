@@ -8,6 +8,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthInput } from "src/components/molecules/authInput";
 import ROUTES from "src/routes";
 import { useSWRConfig } from "swr";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface LogInFormType {
   email?: string;
@@ -17,7 +19,8 @@ const LogIn = () => {
   const router = useRouter();
   useRedirectInAuth();
 
-  const { formState, handleSubmit, register, watch } = useForm<LogInFormType>();
+  const { formState, handleSubmit, register, watch, reset } =
+    useForm<LogInFormType>();
   const { mutate } = useSWRConfig();
 
   const [login, { loading }] = useMutation<LogInFormType>(ROUTES.API_LOG_IN, {
@@ -27,7 +30,19 @@ const LogIn = () => {
         mutate(ROUTES.API_POST);
         router.push(ROUTES.HOME);
       } else {
-        alert(data.message);
+        toast.error(data.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          onClose: () => {
+            reset();
+          },
+        });
       }
     },
     onError: (error) => {
@@ -41,6 +56,18 @@ const LogIn = () => {
 
   return (
     <div className="absolute top-0 bottom-0 left-0 right-0 m-auto flex flex-col justify-center items-center w-screen h-screen bg-slate-100">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <Image src={"/assets/twitter.png"} width={30} height={30} />
       <form
         onSubmit={handleSubmit(onSubmit)}
