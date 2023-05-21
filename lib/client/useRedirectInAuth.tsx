@@ -6,7 +6,12 @@ import ROUTES from "src/routes";
 const useRedirectInAuth = () => {
   const router = useRouter();
 
-  const { profile } = useUser();
+  const { profile } = useUser({
+    redirectUrl:
+      router.pathname === ROUTES.CREATE_ACCOUNT
+        ? ROUTES.CREATE_ACCOUNT
+        : ROUTES.LOG_IN,
+  });
 
   useEffect(() => {
     if (profile?.id) {

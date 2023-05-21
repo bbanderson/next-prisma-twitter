@@ -4,7 +4,9 @@ import { useEffect, useMemo } from "react";
 import ROUTES from "src/routes";
 import useSWR from "swr";
 
-const useUser = () => {
+const useUser = ({
+  redirectUrl = ROUTES.LOG_IN,
+}: { redirectUrl?: string } = {}) => {
   const router = useRouter();
 
   const { data, error, isValidating } = useSWR<{
@@ -17,9 +19,9 @@ const useUser = () => {
   useEffect(() => {
     if (loading || isValidating) return;
     if (!data?.userSessionData?.id) {
-      router.replace(ROUTES.LOG_IN);
+      router.replace(redirectUrl);
     }
-  }, [loading, isValidating, data, router.pathname]);
+  }, [loading, isValidating, data, router.pathname, redirectUrl]);
 
   return { loading, profile: { ...data?.userSessionData } };
 };

@@ -4,12 +4,11 @@ import useUser from "@lib/client/useUser";
 import { Post } from "@prisma/client";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import ROUTES from "src/routes";
 import { PostRawType } from "src/types/postItem";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 
 interface PostForm {
   post: string;
@@ -27,6 +26,7 @@ function Home() {
     handleSubmit,
     reset,
     formState: { errors: formErrors },
+    watch,
   } = useForm<PostForm>();
   const [uploadPost] = useMutation<Post>(ROUTES.API_POST, {
     onCompleted: (data) => {
@@ -37,7 +37,7 @@ function Home() {
     },
     onError: (error) => {
       console.error(error);
-      alert("게시글을 작성할 수 없습니다.");
+      alert("게시글을 작성할 수 없습니다. 관리자에게 문의해 주세요.");
     },
   });
 
@@ -147,7 +147,11 @@ function Home() {
             <button
               type="submit"
               className="max-w-fit text-white font-bold bg-blue-500 px-5 py-2 rounded-full"
-              disabled={loading || formErrors?.post?.type === "required"}
+              disabled={
+                !watch("post") ||
+                loading ||
+                formErrors?.post?.type === "required"
+              }
             >
               트윗하기
             </button>
