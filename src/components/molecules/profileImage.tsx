@@ -14,7 +14,7 @@ const ProfileImage = ({
     <img
       src={imgSrc ?? `${RANDOM_PROFILE_IMG_SRC}?random=${randomSeed}`}
       alt={alt}
-      className="w-14 h-14 rounded-full"
+      className="w-10 h-10 rounded-full"
     />
   );
 };
