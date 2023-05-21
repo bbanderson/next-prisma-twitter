@@ -4,9 +4,11 @@ import withSession from "@lib/server/withSession";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const userSessionId = req.session.user.id;
-
   try {
+    const userSessionId = req.session?.user?.id;
+    if (!userSessionId) {
+      return res.status(401).json({ ok: false });
+    }
     const foundUser = await client.user.findUnique({
       where: { id: userSessionId },
     });
@@ -27,4 +29,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withSession(withHandler({ methods: ["GET"], handler }));
+export default withSession(
+  withHandler({ methods: ["GET"], handler, isPrivate: false })
+);

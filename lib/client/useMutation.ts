@@ -15,7 +15,7 @@ export default function useMutation<
   { loading: boolean; data?: DataType; error?: string }
 ] {
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<DataType>();
+  const [data, setData] = useState<DataType & CommonDataType>();
   const [error, setError] = useState<string>();
 
   const mutation = useCallback((payload?: VariableType) => {

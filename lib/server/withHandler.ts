@@ -20,7 +20,7 @@ const withHandler = ({
       return;
     }
 
-    if (isPrivate) {
+    if (isPrivate && req.method === "GET") {
       if (!req.session?.user) {
         res.status(401).json({ ok: false, message: "로그인이 필요합니다." });
         return;

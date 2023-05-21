@@ -5,6 +5,7 @@ import useMutation from "../lib/client/useMutation";
 import { useRouter } from "next/router";
 import ROUTES from "src/routes";
 import { EMAIL_REGEX, NAME_REGEX } from "src/constants";
+import useRedirectInAuth from "@lib/client/useRedirectInAuth";
 
 interface CreateAccountFormType {
   email: string;
@@ -20,6 +21,7 @@ interface CreateAccountDataType {
 }
 const CreateAccount = () => {
   const router = useRouter();
+  useRedirectInAuth();
   const {
     register,
     handleSubmit,

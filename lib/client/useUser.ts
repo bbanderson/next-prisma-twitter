@@ -7,7 +7,7 @@ import useSWR from "swr";
 const useUser = () => {
   const router = useRouter();
 
-  const { data, isValidating, error } = useSWR<{
+  const { data, error, isValidating } = useSWR<{
     ok: boolean;
     userSessionData?: User;
   }>(ROUTES.API_ME);
@@ -15,11 +15,11 @@ const useUser = () => {
   const loading = useMemo(() => !data && !error, [data, error]);
 
   useEffect(() => {
-    if (loading) return;
-    if (isValidating && !data?.ok) {
+    if (loading || isValidating) return;
+    if (!data?.userSessionData?.id) {
       router.replace(ROUTES.LOG_IN);
     }
-  }, [router.pathname]);
+  }, [loading, isValidating, data, router.pathname]);
 
   return { loading, profile: { ...data?.userSessionData } };
 };

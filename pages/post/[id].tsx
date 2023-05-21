@@ -1,4 +1,4 @@
-import useMutation from "@lib/client/useMutation";
+import useLogout from "@lib/client/useLogout";
 import { usePostItemProps } from "@lib/client/usePostItemProps";
 import { useToggleLike } from "@lib/client/useToggleLike";
 import useUser from "@lib/client/useUser";
@@ -27,14 +27,7 @@ const Post = () => {
     ),
   });
 
-  const [logout] = useMutation(ROUTES.API_LOG_OUT, {
-    onCompleted: (data) => {
-      if (data.ok) {
-        router.replace(ROUTES.LOG_IN);
-      }
-    },
-    onError: console.error,
-  });
+  const { logout } = useLogout();
 
   return (
     <div>

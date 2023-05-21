@@ -1,10 +1,11 @@
 import useMutation from "@lib/client/useMutation";
-import useUser from "@lib/client/useUser";
+import useRedirectInAuth from "@lib/client/useRedirectInAuth";
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AuthInput } from "src/components/molecules/authInput";
 import ROUTES from "src/routes";
+import { useSWRConfig } from "swr";
 
 interface LogInFormType {
   email?: string;
@@ -12,11 +13,16 @@ interface LogInFormType {
 
 const LogIn = () => {
   const router = useRouter();
+  useRedirectInAuth();
+
   const { formState, handleSubmit, register } = useForm<LogInFormType>();
+  const { mutate } = useSWRConfig();
 
   const [login, { loading }] = useMutation<LogInFormType>(ROUTES.API_LOG_IN, {
     onCompleted: (data) => {
       if (data.ok) {
+        mutate(ROUTES.API_ME);
+        mutate(ROUTES.API_POST);
         router.push(ROUTES.HOME);
       } else {
         alert(data.message);

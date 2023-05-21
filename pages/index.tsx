@@ -1,3 +1,4 @@
+import useLogout from "@lib/client/useLogout";
 import useMutation from "@lib/client/useMutation";
 import useUser from "@lib/client/useUser";
 import { Post } from "@prisma/client";
@@ -8,27 +9,18 @@ import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import ROUTES from "src/routes";
 import { PostRawType } from "src/types/postItem";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 
 interface PostForm {
   post: string;
 }
 
 function Home() {
-  const router = useRouter();
-
   const { loading, profile } = useUser();
 
   const { data, mutate } = useSWR<PostRawType>(ROUTES.API_POST);
 
-  const [logout] = useMutation(ROUTES.API_LOG_OUT, {
-    onCompleted: (data) => {
-      if (data.ok) {
-        router.replace(ROUTES.LOG_IN);
-      }
-    },
-    onError: console.error,
-  });
+  const { logout } = useLogout();
 
   const {
     register,
@@ -61,6 +53,8 @@ function Home() {
     e.stopPropagation();
     e.preventDefault();
   }, []);
+
+  if (!data?.posts || !profile.id) return null;
 
   return (
     <div className="flex">
