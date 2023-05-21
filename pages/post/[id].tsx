@@ -23,11 +23,13 @@ const Post = () => {
     userId: profile.id,
     onClickLike: useCallback(
       () => toggleLike({ postId: +(router.query?.id ?? -1) }),
-      []
+      [router.query?.id]
     ),
   });
 
   const { logout } = useLogout();
+
+  if (!router.query?.id) return null;
 
   return (
     <div>
@@ -117,7 +119,10 @@ const Post = () => {
             d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
           />
         </svg>
-        <PostItem {...getPostItemProps(data?.post)} />
+        <PostItem
+          key={router.query.id.toString()}
+          {...getPostItemProps(data?.post)}
+        />
       </main>
     </div>
   );

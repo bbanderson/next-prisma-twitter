@@ -27,7 +27,7 @@ export const usePostItemProps = ({
             onClickLike,
           }
         : null,
-    []
+    [userId]
   );
 
   return {
