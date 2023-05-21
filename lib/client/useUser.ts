@@ -12,7 +12,7 @@ const useUser = () => {
     userSessionData?: User;
   }>(ROUTES.API_ME);
 
-  const loading = useMemo(() => !data && !error, []);
+  const loading = useMemo(() => !data && !error, [data, error]);
 
   useEffect(() => {
     if (loading) return;

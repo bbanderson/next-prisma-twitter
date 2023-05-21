@@ -21,7 +21,7 @@ const withHandler = ({
     }
 
     if (isPrivate) {
-      if (!req.session.user) {
+      if (!req.session?.user) {
         res.status(401).json({ ok: false, message: "로그인이 필요합니다." });
         return;
       }
